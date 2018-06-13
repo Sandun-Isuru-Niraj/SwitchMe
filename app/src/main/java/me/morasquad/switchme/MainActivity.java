@@ -126,6 +126,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void SendUsertoPostActivity() {
+
+        Intent addDevice = new Intent(MainActivity.this, AddNormalDeviceActivity.class);
+        startActivity(addDevice);
     }
 
     private void UserMenuSelector(MenuItem item) {

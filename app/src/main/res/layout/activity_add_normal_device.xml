@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/register"
+    tools:context="me.morasquad.switchme.AddNormalDeviceActivity">
+
+    <include
+        android:id="@+id/add_device_page_toolbar"
+        layout="@layout/app_bar_layout" />
+
+    <EditText
+        android:id="@+id/normal_deviceID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/setup_username"
+        android:ems="10"
+        android:layout_marginTop="100dp"
+        android:hint="Primary Device ID"
+        android:inputType="textPersonName"
+        android:padding="8dp"
+        android:drawableLeft="@drawable/name"
+        android:background="@drawable/inputs"
+        android:layout_alignParentLeft="true" />
+
+    <EditText
+        android:id="@+id/normal_device_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/normal_deviceID"
+        android:ems="10"
+        android:hint="Primary Device Name"
+        android:inputType="textPersonName"
+        android:layout_marginTop="5dp"
+        android:padding="8dp"
+        android:drawableLeft="@drawable/country"
+        android:background="@drawable/inputs"
+        android:layout_alignParentLeft="true" />
+
+    <Button
+        android:id="@+id/nrmal_add_device"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/normal_device_name"
+        android:layout_marginTop="23dp"
+        android:background="@drawable/button"
+        android:text="Add Device"
+        android:textColor="@android:color/background_light"
+        android:layout_alignParentLeft="true" />
+
+
+</RelativeLayout>
