@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/register"
+    tools:context="me.morasquad.switchme.AddDeviceActivity">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/setup_profile_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/profile" />
+
+    <EditText
+        android:id="@+id/setup_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:hint="User Name"
+        android:inputType="textMultiLine"
+        android:padding="8dp"
+        android:drawableLeft="@drawable/username"
+
+        android:background="@drawable/inputs"
+        android:layout_alignParentRight="true" />
+
+    <EditText
+        android:id="@+id/setup_primaryAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/setup_username"
+        android:ems="10"
+        android:layout_marginTop="5dp"
+        android:hint="Primary Device ID"
+        android:inputType="textPersonName"
+        android:padding="8dp"
+        android:drawableLeft="@drawable/name"
+        android:background="@drawable/inputs"
+        android:layout_alignParentLeft="true" />
+
+    <EditText
+        android:id="@+id/setup_device_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/setup_primaryAddress"
+        android:ems="10"
+        android:hint="Primary Device Name"
+        android:inputType="textPersonName"
+        android:layout_marginTop="5dp"
+        android:padding="8dp"
+        android:drawableLeft="@drawable/country"
+        android:background="@drawable/inputs"
+        android:layout_alignParentLeft="true" />
+
+    <Button
+        android:id="@+id/setup_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/setup_device_name"
+        android:layout_marginTop="23dp"
+        android:background="@drawable/button"
+        android:text="Save"
+        android:textColor="@android:color/background_light"
+        android:layout_alignParentLeft="true" />
+
+
+</RelativeLayout>
