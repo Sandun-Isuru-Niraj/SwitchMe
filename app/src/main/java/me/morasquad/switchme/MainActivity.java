@@ -1,5 +1,6 @@
 package me.morasquad.switchme;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -127,6 +129,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void UserMenuSelector(MenuItem item) {
+
+        switch (item.getItemId()){
+
+            case R.id.home :
+                break;
+
+            case R.id.add_device:
+                Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.nav_home:
+                Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.nav_friends:
+                Toast.makeText(this, "Friend List", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.nav_find_friends:
+                Toast.makeText(this, "Find Friends", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.nav_messages:
+                Toast.makeText(this, "Messages", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.nav_settings:
+                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.nav_logout:
+                mAuth.signOut();
+                SendUsertoLoginActivity();
+                Toast.makeText(this, "Logout Successful!", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(actionBarDrawerToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void DisplayAllDevices(){
@@ -142,8 +187,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     protected void populateViewHolder(DeviceViewHolder viewHolder, Devices model, int position) {
 
+                        viewHolder.setDeviceName(model.getDeviceName());
+                        viewHolder.setDeviceID(model.getDeviceId());
                     }
                 };
+
+        deviceList.setAdapter(firebaseRecyclerAdapter);
 
     }
 
@@ -160,10 +209,57 @@ public class MainActivity extends AppCompatActivity {
             DeviceName.setText(deviceName);
         }
 
-        public void setDeviceID(String deviceID){
+        public void setDeviceID(String deviceId){
             TextView DeviceID = (TextView) mView.findViewById(R.id.device_id);
-            DeviceID.setText(deviceID);
+            DeviceID.setText(deviceId);
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseUser currentUsers = mAuth.getCurrentUser();
+
+        if(currentUsers == null){
+            SendUsertoLoginActivity();
+        }else {
+            CheckUserExistance();
+        }
+    }
+
+    private void SendUsertoLoginActivity() {
+
+        Intent login = new Intent(MainActivity.this, LoginActivity.class);
+        login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(login);
+        finish();
+    }
+
+    private void CheckUserExistance(){
+
+        final String current_user_id = mAuth.getCurrentUser().getUid();
+
+        UserRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.hasChild(current_user_id)){
+                    SendUsertoAddDeviceActivity();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void SendUsertoAddDeviceActivity() {
+
+        Intent add = new Intent(MainActivity.this, AddDeviceActivity.class);
+        add.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(add);
+        finish();
+    }
 }

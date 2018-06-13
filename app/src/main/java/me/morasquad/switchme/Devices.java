@@ -6,14 +6,14 @@ package me.morasquad.switchme;
 
 public class Devices {
 
-    public String deviceName, deviceID;
+    public String deviceName, deviceId;
 
     public Devices() {
     }
 
-    public Devices(String deviceName, String deviceID) {
+    public Devices(String deviceName, String deviceId) {
         this.deviceName = deviceName;
-        this.deviceID = deviceID;
+        this.deviceId = deviceId;
     }
 
     public String getDeviceName() {
@@ -24,11 +24,11 @@ public class Devices {
         this.deviceName = deviceName;
     }
 
-    public String getDeviceID() {
-        return deviceID;
+    public String getDeviceId() {
+        return deviceId;
     }
 
-    public void setDeviceID(String deviceID) {
-        this.deviceID = deviceID;
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 }
