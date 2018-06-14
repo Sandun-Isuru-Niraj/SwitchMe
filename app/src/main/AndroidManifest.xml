@@ -21,12 +21,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".RegisterActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".AddDeviceActivity" />
-        <activity android:name=".AddNormalDeviceActivity"></activity>
+        <activity android:name=".AddNormalDeviceActivity" />
+        <activity android:name=".SwitchActivity"
+            android:theme="@style/HomeTheme"></activity>
     </application>
 
 </manifest>

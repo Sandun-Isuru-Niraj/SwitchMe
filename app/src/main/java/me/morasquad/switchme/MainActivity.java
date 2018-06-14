@@ -1,6 +1,8 @@
 package me.morasquad.switchme;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -10,8 +12,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private RecyclerView deviceList;
     private Toolbar mToolbar;
+    private Context mContect = MainActivity.this;
 
     private CircleImageView NavProfileImage;
     private TextView NavProfileUsername;
@@ -45,7 +50,9 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference DataRef;
     private DatabaseReference UserRef;
 
+
     String currentUser;
+    public FirebaseRecyclerAdapter firebaseRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("SwitchMe | Home");
+
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser().getUid();
@@ -179,21 +187,37 @@ public class MainActivity extends AppCompatActivity {
 
     private void DisplayAllDevices(){
 
-        FirebaseRecyclerAdapter<Devices, DeviceViewHolder> firebaseRecyclerAdapter =
-                new FirebaseRecyclerAdapter<Devices, DeviceViewHolder>(
+       firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Devices, DeviceViewHolder>(
 
-                        Devices.class,
-                        R.layout.all_device,
-                        DeviceViewHolder.class,
-                        DeviceRef
-                ) {
+                Devices.class,
+                R.layout.all_device,
+                DeviceViewHolder.class,
+                DeviceRef
+        ) {
+            @Override
+            protected void populateViewHolder(final DeviceViewHolder viewHolder, final Devices model, final int position) {
+
+                viewHolder.setDeviceName(model.getDeviceName());
+                viewHolder.setDeviceID(model.getDeviceId());
+
+                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    protected void populateViewHolder(DeviceViewHolder viewHolder, Devices model, int position) {
+                    public void onClick(View view) {
 
-                        viewHolder.setDeviceName(model.getDeviceName());
-                        viewHolder.setDeviceID(model.getDeviceId());
+                        DatabaseReference dbRef = firebaseRecyclerAdapter.getRef(position);
+                        String device = dbRef.getKey();
+
+                        Intent switch1 = new Intent(MainActivity.this, SwitchActivity.class);
+                        switch1.putExtra("deviceID", device);
+                        startActivity(switch1);
+
                     }
-                };
+                });
+
+            }
+
+
+        };
 
         deviceList.setAdapter(firebaseRecyclerAdapter);
 
@@ -202,9 +226,14 @@ public class MainActivity extends AppCompatActivity {
     public static class DeviceViewHolder extends RecyclerView.ViewHolder{
 
         View mView;
+
+
+
         public DeviceViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
+
+
         }
 
         public void setDeviceName(String deviceName){
@@ -216,6 +245,9 @@ public class MainActivity extends AppCompatActivity {
             TextView DeviceID = (TextView) mView.findViewById(R.id.device_id);
             DeviceID.setText(deviceId);
         }
+
+
+
     }
 
     @Override
