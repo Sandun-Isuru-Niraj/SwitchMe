@@ -66,9 +66,9 @@ public class SwitchActivity extends AppCompatActivity {
         DeviceRef = UserRef.child(currentUser).child("devices").child(deviceName);
 
         DataRef = FirebaseDatabase.getInstance().getReference().child(deviceName);
-        DataRef.addValueEventListener(new ValueEventListener() {
+      /*    DataRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+          public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
 
                     if(dataSnapshot.hasChild("switch")){
@@ -89,6 +89,10 @@ public class SwitchActivity extends AppCompatActivity {
 
             }
         });
+*/
+
+
+
 
         SensorRef = DataRef.child("weather");
 
@@ -156,10 +160,10 @@ public class SwitchActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
                     DataRef.child("switch").setValue("1");
-                    Toast.makeText(SwitchActivity.this, "Checked", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SwitchActivity.this, "Switch Turned ON", Toast.LENGTH_SHORT).show();
                 }else {
                     DataRef.child("switch").setValue("0");
-                    Toast.makeText(SwitchActivity.this, "Not", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SwitchActivity.this, "Switch Turned OFF", Toast.LENGTH_SHORT).show();
                 }
             }
         });
