@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="me.morasquad.switchme.SwitchActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:orientation="horizontal"
-       android:layout_marginTop="15dp"
+       android:layout_margin="15dp"
        android:weightSum="4">
 
        <LinearLayout
@@ -35,13 +39,132 @@
                android:text="Device ID"/>
        </LinearLayout>
 
-       <Switch
-           android:id="@+id/onoff_switch"
+       <android.support.v7.widget.SwitchCompat
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:layout_weight="2"
+           android:text="ON / OFF"
+           android:id="@+id/onoff_switch"
            android:layout_gravity="center"
-           android:text="ON / OFF" />
+           android:theme="@style/SwitchCompatStyle"/>
+
    </LinearLayout>
 
-</LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sensors"
+        android:textSize="15dp"
+        android:layout_marginBottom="10dp"
+        android:textAlignment="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="10dp"
+                android:layout_weight="2">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Temprature"
+                    android:textSize="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:textAlignment="center"/>
+
+
+                <com.github.anastr.speedviewlib.TubeSpeedometer
+                    android:id="@+id/tubeSpeedometer"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    app:sv_minSpeed="0"
+                    app:sv_maxSpeed="1024"
+                    app:sv_unitTextColor="#ffffff"
+                    app:sv_speedTextColor="#fff"
+                    app:sv_textColor="#fff"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:id="@+id/tem_text"
+                    android:text="Temprature"
+                    android:textAlignment="center"/>
+
+                <com.txusballesteros.SnakeView
+                    android:id="@+id/snake"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:strokeColor="@color/colorPrimaryDark"
+                    android:layout_weight="2"/>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="10dp"
+                android:layout_weight="2">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Humidity"
+                    android:textSize="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:textAlignment="center"/>
+
+                <com.github.anastr.speedviewlib.TubeSpeedometer
+                    android:id="@+id/tubeSpeedometer2"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    app:sv_minSpeed="0"
+                    app:sv_maxSpeed="1024"
+                    app:sv_unitTextColor="#ffffff"
+                    app:sv_speedTextColor="#fff"
+                    app:sv_textColor="#fff"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:id="@+id/hum_text"
+                    android:text="Temprature"
+                    android:textAlignment="center"/>
+
+                <com.txusballesteros.SnakeView
+                    android:id="@+id/snake1"
+                    app:strokeColor="@color/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="2"/>
+
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    </LinearLayout>
+</ScrollView>

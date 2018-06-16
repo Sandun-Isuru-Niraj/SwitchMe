@@ -3,18 +3,20 @@ package me.morasquad.switchme;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.anastr.speedviewlib.TubeSpeedometer;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.txusballesteros.SnakeView;
 
 public class SwitchActivity extends AppCompatActivity {
 
@@ -22,12 +24,15 @@ public class SwitchActivity extends AppCompatActivity {
     private DatabaseReference DeviceRef;
     private DatabaseReference UserRef;
     private DatabaseReference DataRef;
-    private TextView DeviceName, DeviceID;
+    private DatabaseReference SensorRef;
+    private TextView DeviceName, DeviceID, Temprature, Humidity;
 
 
     String currentUser;
 
-    private Switch simpleSwitch;
+    private SwitchCompat simpleSwitch;
+    private TubeSpeedometer tubeSpeedometer,tubeSpeedometer2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,11 +40,24 @@ public class SwitchActivity extends AppCompatActivity {
 
         DeviceName = (TextView) findViewById(R.id.switch_device_name);
         DeviceID = (TextView) findViewById(R.id.switch_device_id);
+        Temprature = (TextView) findViewById(R.id.tem_text);
+        Humidity = (TextView) findViewById(R.id.hum_text);
+        tubeSpeedometer = (TubeSpeedometer) findViewById(R.id.tubeSpeedometer);
+        tubeSpeedometer.setMaxSpeed(1024);
+        tubeSpeedometer2 = (TubeSpeedometer) findViewById(R.id.tubeSpeedometer2);
+        tubeSpeedometer2.setMaxSpeed(1024);
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser().getUid();
 
-        simpleSwitch = (Switch) findViewById(R.id.onoff_switch);
+        simpleSwitch = (SwitchCompat) findViewById(R.id.onoff_switch);
+        final SnakeView snakeView = (SnakeView)findViewById(R.id.snake);
+        snakeView.setMinValue(0);
+        snakeView.setMaxValue(1024);
+
+        final SnakeView snakeView1 = (SnakeView)findViewById(R.id.snake1);
+        snakeView1.setMinValue(0);
+        snakeView1.setMaxValue(1024);
 
 
         Intent intent = getIntent();
@@ -62,6 +80,38 @@ public class SwitchActivity extends AppCompatActivity {
 
                     }else {
                         Toast.makeText(SwitchActivity.this, "Device Error!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        SensorRef = DataRef.child("weather");
+
+        SensorRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+
+                    if(dataSnapshot.hasChild("temprature")){
+                        String val = dataSnapshot.child("temprature").getValue().toString();
+                        snakeView.addValue(Integer.parseInt(val));
+                        tubeSpeedometer.speedTo(Float.parseFloat(val));
+                        Temprature.setText(val +"°C");
+
+                    }else {
+                        Toast.makeText(SwitchActivity.this, "Device Error!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    if(dataSnapshot.hasChild("humidity")){
+                        String val = dataSnapshot.child("humidity").getValue().toString();
+                        snakeView1.addValue(Integer.parseInt(val));
+                        tubeSpeedometer2.speedTo(Float.parseFloat(val));
+                        Humidity.setText(val +"°C");
                     }
                 }
             }
