@@ -63,7 +63,7 @@
         android:padding="10dp"
         android:layout_alignParentLeft="true" />
 
-    <Button
+    <com.rey.material.widget.Button
         android:id="@+id/register_create_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,6 +74,7 @@
         android:layout_marginTop="5dp"
         android:text="Create Account"
         android:textAllCaps="false"
+        style="@style/Material.Drawable.Ripple.Wave"
         android:textColor="@android:color/background_light"
         android:textSize="20sp"
         android:layout_alignParentLeft="true" />

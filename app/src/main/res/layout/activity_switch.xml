@@ -9,6 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
    <LinearLayout
@@ -161,6 +163,77 @@
             </LinearLayout>
 
 
+
+
+
+        </LinearLayout>
+
+        <com.rey.material.widget.CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Events"
+            android:textSize="15dp"
+            android:layout_marginTop="40dp"
+            style="@style/Material.Drawable.CheckBox"
+            android:id="@+id/events"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:id="@+id/event_layout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clickable="false"
+            android:weightSum="4">
+
+
+                <com.rey.material.widget.Spinner
+                    android:id="@+id/param"
+                    style="@style/Material.Widget.Spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:clickable="false"
+                    app:spn_labelEnable="false"
+                    app:rd_style="@style/Material.Drawable.Ripple.Wave" />
+
+                <com.rey.material.widget.Spinner
+                    android:id="@+id/compare"
+                    style="@style/Material.Widget.Spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:clickable="false"
+                    app:rd_style="@style/Material.Drawable.Ripple.Wave" />
+
+
+        </LinearLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="Enter Triggering Value "
+            android:defaultFocusHighlightEnabled="false"
+            android:id="@+id/triger_val"/>
+
+        <com.rey.material.widget.Button
+            android:id="@+id/set_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button"
+            android:padding="15dp"
+            android:layout_marginTop="5dp"
+            android:text="Set Event"
+            android:enabled="false"
+            style="@style/Material.Drawable.Ripple.Wave"
+            android:textColor="@android:color/background_light"
+            android:textSize="10dp" />
 
         </LinearLayout>
 
