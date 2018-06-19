@@ -1,6 +1,7 @@
 package me.morasquad.switchme;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
@@ -8,10 +9,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import com.rey.material.widget.Spinner;
-import com.rey.material.widget.CheckBox;
-import com.rey.material.widget.Button;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,20 +28,16 @@ import com.google.firebase.database.ValueEventListener;
 import com.txusballesteros.SnakeView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class SwitchActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener {
+public class SwitchActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private DatabaseReference DeviceRef;
     private DatabaseReference UserRef;
     private DatabaseReference DataRef;
-    private DatabaseReference EventRef;
-    private Spinner spinnerParam;
-    private Spinner spinnerCompare;
-    private CheckBox eventSwitch;
-    private Button setEvent;
-    private LinearLayout eventLayaout;
+    private DatabaseReference SwitchRef;
 
     private DatabaseReference SensorRef;
     private TextView DeviceName, DeviceID, Temprature, Humidity;
@@ -49,32 +47,27 @@ public class SwitchActivity extends AppCompatActivity implements Spinner.OnItemS
 
     private SwitchCompat simpleSwitch;
     private TubeSpeedometer tubeSpeedometer,tubeSpeedometer2;
+    private String item1;
+    private String item2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_switch);
 
-        eventLayaout = (LinearLayout) findViewById(R.id.event_layout);
-        eventSwitch = (CheckBox) findViewById(R.id.events);
-        setEvent = (Button) findViewById(R.id.set_event);
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser().getUid();
+
         DeviceName = (TextView) findViewById(R.id.switch_device_name);
         DeviceID = (TextView) findViewById(R.id.switch_device_id);
         Temprature = (TextView) findViewById(R.id.tem_text);
         Humidity = (TextView) findViewById(R.id.hum_text);
-        spinnerParam = (Spinner) findViewById(R.id.param);
-        spinnerParam.setOnItemSelectedListener(this);
-        spinnerCompare = (Spinner) findViewById(R.id.compare);
-        spinnerCompare.setOnItemSelectedListener(this);
 
-        spinnerParamOnLoad();
         tubeSpeedometer = (TubeSpeedometer) findViewById(R.id.tubeSpeedometer);
         tubeSpeedometer.setMaxSpeed(1024);
         tubeSpeedometer2 = (TubeSpeedometer) findViewById(R.id.tubeSpeedometer2);
         tubeSpeedometer2.setMaxSpeed(1024);
 
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser().getUid();
 
         simpleSwitch = (SwitchCompat) findViewById(R.id.onoff_switch);
         final SnakeView snakeView = (SnakeView)findViewById(R.id.snake);
@@ -93,34 +86,20 @@ public class SwitchActivity extends AppCompatActivity implements Spinner.OnItemS
 
         DataRef = FirebaseDatabase.getInstance().getReference().child(deviceName);
 
-        eventSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(eventSwitch.isChecked()){
-                    eventLayaout.setVisibility(LinearLayout.VISIBLE);
-                }else {
-                    eventLayaout.setVisibility(LinearLayout.GONE);
-                }
-            }
-        });
 
+        SwitchRef = DataRef.child("switch");
 
-
-      /*    DataRef.addValueEventListener(new ValueEventListener() {
+        SwitchRef.addValueEventListener(new ValueEventListener() {
             @Override
           public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
 
-                    if(dataSnapshot.hasChild("switch")){
-                        if(dataSnapshot.child("switch").getValue().toString().equals("1")){
+                        if(dataSnapshot.getValue().toString().equals("1")){
                             simpleSwitch.setChecked(true);
                         }else {
                             simpleSwitch.setChecked(false);
                         }
 
-                    }else {
-                        Toast.makeText(SwitchActivity.this, "Device Error!", Toast.LENGTH_SHORT).show();
-                    }
                 }
             }
 
@@ -129,7 +108,7 @@ public class SwitchActivity extends AppCompatActivity implements Spinner.OnItemS
 
             }
         });
-*/
+
 
 
 
@@ -195,6 +174,7 @@ public class SwitchActivity extends AppCompatActivity implements Spinner.OnItemS
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("SwitchMe | "+deviceName);
 
+
         simpleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -208,36 +188,9 @@ public class SwitchActivity extends AppCompatActivity implements Spinner.OnItemS
             }
         });
 
-        setEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
 
     }
 
-    private void spinnerParamOnLoad() {
-
-        List<String> parameter = new ArrayList<String>();
-        parameter.add("Select Parameter");
-        parameter.add("Temperature");
-        parameter.add("Humidity");
-
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, parameter);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerParam.setAdapter(dataAdapter);
-
-        List<String> compare = new ArrayList<String>();
-        compare.add("Select Comparator");
-        compare.add("<");
-        compare.add(">");
-
-        ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, compare);
-        dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCompare.setAdapter(dataAdapter2);
-    }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         int id  = item.getItemId();
@@ -258,23 +211,4 @@ public class SwitchActivity extends AppCompatActivity implements Spinner.OnItemS
     }
 
 
-    @Override
-    public void onItemSelected(Spinner parent, View view, int position, long id) {
-
-        Spinner spinner = (Spinner) parent;
-        String item1 = "";
-        String item2 = "";
-        if(spinner.getId() == R.id.param)
-        {
-            item1 = parent.getSelectedItem().toString();
-
-        }
-        else if(spinner.getId() == R.id.compare)
-        {
-            item2 = parent.getSelectedItem().toString();
-        }
-
-        Toast.makeText(parent.getContext(), "Parameter: " + item1 + " Mom " + item2, Toast.LENGTH_LONG).show();
-
-    }
 }
