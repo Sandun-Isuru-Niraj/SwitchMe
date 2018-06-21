@@ -147,33 +147,34 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.add_device:
-                Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
+                Intent addDevice = new Intent(MainActivity.this, AddNormalDeviceActivity.class);
+                startActivity(addDevice);
                 break;
 
-            case R.id.nav_home:
-                Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.nav_friends:
-                Toast.makeText(this, "Friend List", Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.nav_find_friends:
-                Toast.makeText(this, "Find Friends", Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.nav_messages:
-                Toast.makeText(this, "Messages", Toast.LENGTH_SHORT).show();
-                break;
-
-            case R.id.nav_settings:
-                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
-                break;
 
             case R.id.nav_logout:
-                mAuth.signOut();
-                SendUsertoLoginActivity();
-                Toast.makeText(this, "Logout Successful!", Toast.LENGTH_SHORT).show();
+
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int choice) {
+                        switch (choice) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                mAuth.signOut();
+                                SendUsertoLoginActivity();
+                                Toast.makeText(MainActivity.this, "Logout Successful!", Toast.LENGTH_SHORT).show();
+
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContect);
+                builder.setMessage("Are you need to Logout?")
+                        .setNegativeButton("No", dialogClickListener)
+                        .setPositiveButton("Yes", dialogClickListener).show();
+
                 break;
         }
     }
