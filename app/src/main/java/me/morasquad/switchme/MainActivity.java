@@ -1,11 +1,13 @@
 package me.morasquad.switchme;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -208,6 +211,57 @@ public class MainActivity extends AppCompatActivity {
                         switch1.putExtra("deviceID", device);
                         startActivity(switch1);
 
+                    }
+                });
+
+                viewHolder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+
+                        DatabaseReference dbRef = firebaseRecyclerAdapter.getRef(position);
+                        final String device = dbRef.getKey();
+
+                        PopupMenu popup = new PopupMenu(MainActivity.this, view);
+                        popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
+
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem menuItem) {
+
+
+
+                                switch (menuItem.getItemId()){
+
+                                    case R.id.delete_switch:
+
+                                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int choice) {
+                                                switch (choice) {
+                                                    case DialogInterface.BUTTON_POSITIVE:
+
+                                                        DeviceRef.child(device).removeValue();
+                                                        Toast.makeText(mContect, "Device Removed!", Toast.LENGTH_SHORT).show();
+
+                                                        break;
+                                                    case DialogInterface.BUTTON_NEGATIVE:
+                                                        break;
+                                                }
+                                            }
+                                        };
+
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(mContect);
+                                        builder.setMessage("Remove this Device?")
+                                                .setPositiveButton("Yes", dialogClickListener)
+                                                .setNegativeButton("No", dialogClickListener).show();
+
+
+                                }
+                                return true;
+                            }
+                        });
+                        popup.show();
+                        return false;
                     }
                 });
 
