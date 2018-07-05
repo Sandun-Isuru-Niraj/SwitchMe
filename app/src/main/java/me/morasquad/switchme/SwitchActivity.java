@@ -51,19 +51,19 @@ public class SwitchActivity extends AppCompatActivity {
         Humidity = (TextView) findViewById(R.id.hum_text);
 
         tubeSpeedometer = (TubeSpeedometer) findViewById(R.id.tubeSpeedometer);
-        tubeSpeedometer.setMaxSpeed(1024);
+        tubeSpeedometer.setMaxSpeed(60);
         tubeSpeedometer2 = (TubeSpeedometer) findViewById(R.id.tubeSpeedometer2);
-        tubeSpeedometer2.setMaxSpeed(1024);
+        tubeSpeedometer2.setMaxSpeed(100);
 
 
         simpleSwitch = (SwitchCompat) findViewById(R.id.onoff_switch);
         final SnakeView snakeView = (SnakeView)findViewById(R.id.snake);
         snakeView.setMinValue(0);
-        snakeView.setMaxValue(1024);
+        snakeView.setMaxValue(60);
 
         final SnakeView snakeView1 = (SnakeView)findViewById(R.id.snake1);
         snakeView1.setMinValue(0);
-        snakeView1.setMaxValue(1024);
+        snakeView1.setMaxValue(100);
 
 
         Intent intent = getIntent();
@@ -121,7 +121,7 @@ public class SwitchActivity extends AppCompatActivity {
                         String val = dataSnapshot.child("humidity").getValue().toString();
                         snakeView1.addValue(Integer.parseInt(val));
                         tubeSpeedometer2.speedTo(Float.parseFloat(val));
-                        Humidity.setText(val +"°C");
+                        Humidity.setText(val +"%");
                     }
                 }
             }

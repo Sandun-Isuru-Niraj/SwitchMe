@@ -94,7 +94,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     app:sv_minSpeed="0"
-                    app:sv_maxSpeed="1024"
+                    app:sv_maxSpeed="60"
                     app:sv_unitTextColor="#ffffff"
                     app:sv_speedTextColor="#fff"
                     app:sv_textColor="#fff"/>
@@ -138,7 +138,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     app:sv_minSpeed="0"
-                    app:sv_maxSpeed="1024"
+                    app:sv_maxSpeed="100"
                     app:sv_unitTextColor="#ffffff"
                     app:sv_speedTextColor="#fff"
                     app:sv_textColor="#fff"/>
